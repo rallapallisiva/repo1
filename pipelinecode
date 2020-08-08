@@ -1,0 +1,27 @@
+node{
+    
+  
+        stage("pullcode"){
+            
+                git 'https://github.com/rallapallisiva/repo1.git/'
+            
+        }
+        stage("build code"){
+            
+                def mvnHome = tool name: 'Maven 3.5.4', type: 'maven'
+                sh "${mvnHome}/bin/mvn clean package"
+            
+        }
+        stage("deploy"){
+            
+                sshagent(['Deploy_User']) {
+            
+                sh "scp -o StrictHostKeyChecking=no target/*.war ubuntu@13.232.23.247:/opt/tomcat/webapps"
+                 }
+            
+        }
+    
+  
+}
+    
+    
